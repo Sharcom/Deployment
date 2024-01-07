@@ -1,0 +1,152 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+    name: rabbitmq-cluster
+spec:
+  rabbitmq:
+    additionalConfig: |
+      default_user=guest
+      default_pass=guest
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logging-deployment
+spec:  
+  selector:
+    matchLabels:
+      app: logging
+  template:
+    metadata:
+      labels:
+        app: logging
+    spec:
+      containers:
+      - name: logging
+        image: robinvhoof2001/sharcom-logging:latest        
+        ports:
+        - containerPort: 5001
+        env:
+        - name: MessageBus__Host
+          value: "rabbitmq-cluster"
+        resources:
+          limits:
+            cpu: 400m
+          requests:
+            cpu: 200m
+        readinessProbe:
+          httpGet:
+            path: /Health
+            port: 5001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tenant-deployment
+spec:
+  selector:
+    matchLabels:
+      app: tenant
+  template:
+    metadata:
+      labels:
+        app: tenant
+    spec:
+      containers:
+      - name: tenant
+        image: robinvhoof2001/sharcom-tenant:latest     
+        ports:
+        - containerPort: 5002
+        resources:
+          limits:
+            cpu: 400m
+          requests:
+            cpu: 200m
+        readinessProbe:
+          httpGet:
+            path: /Health
+            port: 5002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-deployment
+spec:
+  selector:
+    matchLabels:
+      app: post
+  template:
+    metadata:
+      labels:
+        app: post
+    spec:
+      containers:
+      - name: post
+        image: robinvhoof2001/sharcom-post:latest
+        ports:
+        - containerPort: 5003
+        resources:
+          limits:
+            cpu: 400m
+          requests:
+            cpu: 200m
+        readinessProbe:
+          httpGet:
+            path: /Health
+            port: 5003
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: robinvhoof2001/sharcom-frontend:latest
+        ports:
+        - containerPort: 4200
+        resources:
+          limits:
+            cpu: 300m
+          requests:
+            cpu: 150m
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4200
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-frontend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: admin-frontend
+  template:
+    metadata:
+      labels:
+        app: admin-frontend
+    spec:
+      containers:
+      - name: admin-frontend
+        image: robinvhoof2001/sharcom-admin-frontend:latest
+        ports:
+        - containerPort: 4200
+        resources:
+          limits:
+            cpu: 400m
+          requests:
+            cpu: 200m
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4200
