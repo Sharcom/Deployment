@@ -29,6 +29,10 @@ spec:
         env:
         - name: MessageBus__Host
           value: "rabbitmq-cluster"
+        - name: MessageBus__Exchange
+          value: "sharcom"
+        - name: ConnectionStrings__LoggingDatabase
+          value: "Data Source=sharcommsdb.c80y6kdyckyj.eu-central-1.rds.amazonaws.com,1433;Database=Logging-database;Application Name=Logging-service;Integrated Security=false;User ID=admin;Password=letmeinnow;TrustServerCertificate=True;"
         resources:
           limits:
             cpu: 400m
@@ -57,6 +61,21 @@ spec:
         image: 031436274967.dkr.ecr.eu-central-1.amazonaws.com/sharcom-tenant:latest     
         ports:
         - containerPort: 5002
+        env:
+        - name: MessageBus__Host
+          value: "rabbitmq-cluster"
+        - name: MessageBus__Exchange
+          value: "sharcom"
+        - name: ConnectionStrings__TenantDatabase
+          value: "Data Source=sharcommsdb.c80y6kdyckyj.eu-central-1.rds.amazonaws.com,1433;Database=Tenant-database;Application Name=Tenant-service;Integrated Security=false;User ID=admin;Password=letmeinnow;TrustServerCertificate=True;"
+        - name: Auth0__Domain
+          value: "sharcom.eu.auth0.com"
+        - name: Auth0__Audience
+          value: "https://sharcom.eu.auth0.com/api/v2/"
+        - name: Auth0__ManagementAPI__ClientID
+          value: "jEapMJEYPYB39DOo6adM824to3HoKNNQ"
+        - name: Auth0__ManagementAPI__ClientSecret
+          value: "HenjZSeMMwiL0yXNPSD589KLzpac1-TvK1_Cm1k7T07ReV3AVVbmjxgOItcdsQOC"
         resources:
           limits:
             cpu: 400m
@@ -85,6 +104,21 @@ spec:
         image: 031436274967.dkr.ecr.eu-central-1.amazonaws.com/sharcom-post:latest
         ports:
         - containerPort: 5003
+        env:
+        - name: MessageBus__Host
+          value: "rabbitmq-cluster"
+        - name: MessageBus__Exchange
+          value: "sharcom"
+        - name: ConnectionStrings__PostDatabase
+          value: "Data Source=sharcommsdb.c80y6kdyckyj.eu-central-1.rds.amazonaws.com,1433;Database=Post-database;Application Name=Post-service;Integrated Security=false;User ID=admin;Password=letmeinnow;TrustServerCertificate=True;"
+        - name: Auth0__Domain
+          value: "sharcom.eu.auth0.com"
+        - name: Auth0__Audience
+          value: "https://sharcom.eu.auth0.com/api/v2/"
+        - name: Auth0__ManagementAPI__ClientID
+          value: "jEapMJEYPYB39DOo6adM824to3HoKNNQ"
+        - name: Auth0__ManagementAPI__ClientSecret
+          value: "HenjZSeMMwiL0yXNPSD589KLzpac1-TvK1_Cm1k7T07ReV3AVVbmjxgOItcdsQOC"
         resources:
           limits:
             cpu: 400m
