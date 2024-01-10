@@ -1,1 +1,1 @@
-kubectl rollout restart -f "https://raw.githubusercontent.com/Sharcom/Deployment/main/Production/deployment.yaml"
+kubectl rollout restart -f deployment.yaml
