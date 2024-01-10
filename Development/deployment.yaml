@@ -38,6 +38,11 @@ spec:
           httpGet:
             path: /Health
             port: 5001
+        strategy: 
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -66,6 +71,11 @@ spec:
           httpGet:
             path: /Health
             port: 5002
+        strategy: 
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -94,6 +104,11 @@ spec:
           httpGet:
             path: /Health
             port: 5003
+        strategy: 
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -122,6 +137,11 @@ spec:
           httpGet:
             path: /
             port: 4200
+        strategy: 
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -150,3 +170,8 @@ spec:
           httpGet:
             path: /
             port: 4200
+        strategy: 
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 0
